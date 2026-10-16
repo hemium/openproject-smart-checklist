@@ -2,7 +2,7 @@
 
 # Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
 # or not at all
-require 'open_project/plugins'
+require "open_project/plugins"
 
 module OpenProject
   module SmartChecklist
@@ -12,9 +12,9 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      register 'openproject-smart_checklist',
-               author_url: 'https://github.com/hemium',
-               requires_openproject: '>= 17.3.0'
+      register "openproject-smart_checklist",
+               author_url: "https://github.com/hemium",
+               requires_openproject: ">= 17.3.0"
     end
   end
 end

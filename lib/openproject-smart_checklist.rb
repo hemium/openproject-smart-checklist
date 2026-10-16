@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require 'open_project/smart_checklist'
+require "open_project/smart_checklist"
