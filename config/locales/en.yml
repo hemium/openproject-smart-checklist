@@ -1,0 +1,5 @@
+en:
+  activerecord:
+    attributes:
+      work_package:
+        smart_checklist: "Smart checklist"

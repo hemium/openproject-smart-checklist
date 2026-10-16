@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 3.4"
   s.license = "GPL-3.0"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + %w[CHANGELOG.md README.md]
+  s.files = Dir["{app,config,db,frontend,lib}/**/*"] + %w[CHANGELOG.md README.md]
   s.metadata["rubygems_mfa_required"] = "true"
 end

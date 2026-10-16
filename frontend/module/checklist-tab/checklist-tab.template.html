@@ -1,0 +1,132 @@
+<div class="smart-checklist">
+  @if (progress.total > 0) {
+    <div class="smart-checklist--progress">
+      <span class="smart-checklist--progress-label">
+        {{ progress.done }}/{{ progress.total - progress.skipped }} ({{ progress.percent }}%)
+      </span>
+      <progress [value]="progress.done" [max]="progress.total - progress.skipped"></progress>
+    </div>
+  }
+
+  @if (!rawMode) {
+    <div>
+      @for (section of sections; track $index) {
+        <div class="smart-checklist--section">
+          @if (section.header) {
+            <h4 class="smart-checklist--header">{{ section.header }}</h4>
+          }
+          <ul class="smart-checklist--items">
+            @for (item of section.items; track item.index) {
+              <li class="smart-checklist--item">
+                @if (editingIndex === item.index) {
+                  <div class="smart-checklist--row">
+                    <input
+                      type="text"
+                      class="smart-checklist--edit-input"
+                      [(ngModel)]="editingText"
+                      (keydown.enter)="commitEdit()"
+                      (keydown.escape)="cancelEdit()"
+                    />
+                    <button class="button -tiny -highlight" (click)="commitEdit()">
+                      {{ I18n.t('js.smart_checklist.save') }}
+                    </button>
+                    <button class="button -tiny" (click)="cancelEdit()">
+                      {{ I18n.t('js.smart_checklist.cancel') }}
+                    </button>
+                  </div>
+                } @else {
+                  <div class="smart-checklist--row">
+                    <input
+                      type="checkbox"
+                      class="smart-checklist--checkbox"
+                      [checked]="statusOf(item.entry) === 'done'"
+                      [disabled]="!editable"
+                      (change)="toggle(item.entry, item.index)"
+                    />
+                    <span
+                      class="smart-checklist--text -status-{{ statusOf(item.entry) }}"
+                      (dblclick)="editable && startEdit(item.index, item.entry)"
+                    >{{ item.entry.text }}</span>
+                    @if (statusOf(item.entry) === 'in_progress' || statusOf(item.entry) === 'skipped') {
+                      <span class="smart-checklist--status-label">
+                        {{ itemLabel(statusOf(item.entry)) }}
+                      </span>
+                    }
+                    @if (editable) {
+                      <span class="smart-checklist--actions">
+                        <select
+                          class="smart-checklist--status"
+                          [value]="statusOf(item.entry)"
+                          (change)="setStatus(item.index, $any($event.target).value)"
+                          [attr.aria-label]="I18n.t('js.smart_checklist.set_status')"
+                        >
+                          <option value="todo">{{ itemLabel('todo') }}</option>
+                          <option value="in_progress">{{ itemLabel('in_progress') }}</option>
+                          <option value="skipped">{{ itemLabel('skipped') }}</option>
+                          <option value="done">{{ itemLabel('done') }}</option>
+                        </select>
+                        <button class="button -tiny" (click)="moveItem(item.index, -1)" [disabled]="item.index === 0">↑</button>
+                        <button class="button -tiny" (click)="moveItem(item.index, 1)" [disabled]="item.index === lastIndex">↓</button>
+                        <button class="button -tiny" (click)="startEdit(item.index, item.entry)">
+                          {{ I18n.t('js.smart_checklist.edit') }}
+                        </button>
+                        <button class="button -tiny" (click)="removeItem(item.index)">
+                          {{ I18n.t('js.smart_checklist.delete') }}
+                        </button>
+                      </span>
+                    }
+                  </div>
+                  @for (note of item.entry.notes; track note) {
+                    <div class="smart-checklist--note">{{ note }}</div>
+                  }
+                }
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (progress.total === 0) {
+        <p class="smart-checklist--empty">
+          {{ I18n.t('js.smart_checklist.empty') }}
+        </p>
+      }
+
+      @if (editable) {
+        <div class="smart-checklist--footer">
+          <input
+            type="text"
+            class="smart-checklist--new-input"
+            [placeholder]="I18n.t('js.smart_checklist.add_placeholder')"
+            [(ngModel)]="newItemText"
+            (keydown.enter)="addItem()"
+          />
+          <button class="button -tiny -highlight" (click)="addItem()" [disabled]="!newItemText.trim()">
+            {{ I18n.t('js.smart_checklist.add') }}
+          </button>
+          <button class="button -tiny" (click)="enterRawMode()">
+            {{ I18n.t('js.smart_checklist.edit_as_text') }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  @if (rawMode) {
+    <div class="smart-checklist--raw">
+      <textarea
+        class="smart-checklist--textarea"
+        rows="12"
+        [(ngModel)]="rawText"
+      ></textarea>
+      <div class="smart-checklist--footer">
+        <button class="button -tiny -highlight" (click)="saveRaw()">
+          {{ I18n.t('js.smart_checklist.save') }}
+        </button>
+        <button class="button -tiny" (click)="cancelRawMode()">
+          {{ I18n.t('js.smart_checklist.cancel') }}
+        </button>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,18 @@
+en:
+  js:
+    smart_checklist:
+      tab_name: "Checklist"
+      empty: "No checklist items yet."
+      add_placeholder: "Add a checklist item"
+      add: "Add"
+      edit: "Edit"
+      delete: "Delete"
+      save: "Save"
+      cancel: "Cancel"
+      edit_as_text: "Edit as text"
+      set_status: "Set item status"
+      status:
+        todo: "To do"
+        done: "Done"
+        in_progress: "In progress"
+        skipped: "Skipped"
