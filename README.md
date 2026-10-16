@@ -48,6 +48,46 @@ cd ~/repos/openproject
 bundle exec rspec ../openproject-smart-checklist/spec/lib/open_project/smart_checklist/engine_spec.rb
 ```
 
+## Checklist format
+
+One entry per line; leading/trailing whitespace is trimmed and blank lines are ignored.
+
+| Line            | Meaning                              |
+|-----------------|--------------------------------------|
+| `# text`        | Header (`##`, `###` also allowed)    |
+| `- [ ] text`    | Todo item (canonical)                |
+| `- [x] text`    | Done item (`- [X]` also allowed)     |
+| `- [~] text`    | In-progress item                     |
+| `- [-] text`    | Skipped item                         |
+| `> text`        | Note attached to the previous item   |
+
+On input, the Jira Smart Checklist shorthand is also accepted: `- text` (todo),
+`+ text` (done), `~ text` (in progress), `x text` (skipped). The canonical bracket
+form wins, so `- [x] a` parses as a done item. Any other non-blank line becomes a
+todo item with that text.
+
+## API v3
+
+The checklist is a plain text attribute `smartChecklist` on work packages, plus a
+read-only `smartChecklistProgress` object (`total`, `done`, `inProgress`, `skipped`,
+`todo`, `percent`; percent excludes skipped items).
+
+Create an API key under **My account → Access tokens**, then:
+
+```bash
+# Read
+curl -u "apikey:$APIKEY" http://127.0.0.1:3000/api/v3/work_packages/1 | jq '.smartChecklist, .smartChecklistProgress'
+
+# Update (send the current lockVersion)
+curl -u "apikey:$APIKEY" -X PATCH http://127.0.0.1:3000/api/v3/work_packages/1 \
+  -H "Content-Type: application/json" \
+  -d '{"smartChecklist": "# Sprint\n- [ ] write spec\n- [x] implement\n> note on impl", "lockVersion": 3}'
+```
+
+Changes are journaled like any other attribute: they appear in the work package
+Activity feed and trigger `work_package:updated` webhooks whose `work_package`
+payload includes `smartChecklist` and `smartChecklistProgress`.
+
 ## Installation in production
 
 For production installations, see the official OpenProject plugin documentation:
