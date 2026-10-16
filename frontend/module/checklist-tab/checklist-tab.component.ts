@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, inject } from '@angular/core';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { TabComponent } from 'core-app/features/work-packages/components/wp-tabs/components/wp-tab-wrapper/tab';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
@@ -44,6 +44,8 @@ export class SmartChecklistTabComponent implements TabComponent {
   @InjectField() schemaCache:SchemaCacheService;
 
   readonly I18n = inject(I18nService);
+
+  readonly injector = inject(Injector);
 
   public rawMode = false;
 
