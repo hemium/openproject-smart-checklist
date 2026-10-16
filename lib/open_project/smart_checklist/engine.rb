@@ -22,6 +22,13 @@ module OpenProject
       patches %i[WorkPackage]
       patch_with_namespace :WorkPackages, :BaseContract
 
+      config.to_prepare do
+        # Allow journal diffs for smart_checklist (core whitelists diffable fields).
+        unless JournalsController <= OpenProject::SmartChecklist::Patches::JournalsControllerPatch
+          JournalsController.prepend(OpenProject::SmartChecklist::Patches::JournalsControllerPatch)
+        end
+      end
+
       extend_api_response(:v3, :work_packages, :work_package,
                           &::OpenProject::SmartChecklist::Patches::API::WorkPackageRepresenter.extension)
 
