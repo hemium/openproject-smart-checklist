@@ -1,0 +1,6 @@
+Gemfile.lock
+*.gem
+.bundle/
+tmp/
+log/
+node_modules/

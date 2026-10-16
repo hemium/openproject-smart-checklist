@@ -1,0 +1,4 @@
+# The entry file must keep the gem's name (openproject-smart_checklist) for Bundler.require.
+Naming/FileName:
+  Exclude:
+    - 'lib/openproject-smart_checklist.rb'
