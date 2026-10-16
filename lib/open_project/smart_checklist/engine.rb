@@ -27,6 +27,11 @@ module OpenProject
         unless JournalsController <= OpenProject::SmartChecklist::Patches::JournalsControllerPatch
           JournalsController.prepend(OpenProject::SmartChecklist::Patches::JournalsControllerPatch)
         end
+
+        # Hide the raw attribute from the work package form (the Checklist tab is the UI).
+        unless Type.singleton_class <= OpenProject::SmartChecklist::Patches::TypePatch
+          Type.singleton_class.prepend(OpenProject::SmartChecklist::Patches::TypePatch)
+        end
       end
 
       extend_api_response(:v3, :work_packages, :work_package,
