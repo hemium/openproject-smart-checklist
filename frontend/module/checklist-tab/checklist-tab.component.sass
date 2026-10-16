@@ -1,0 +1,47 @@
+.smart-checklist
+  &--progress
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    margin-bottom: 0.75rem
+    progress
+      flex-grow: 1
+  &--items
+    list-style: none
+    margin: 0 0 0.75rem
+    padding: 0
+  &--item
+    padding: 0.15rem 0
+  &--checkbox
+    margin-right: 0.5rem
+  &--text.-status-done
+    text-decoration: line-through
+    opacity: 0.6
+  &--text.-status-skipped
+    text-decoration: line-through
+    opacity: 0.6
+  &--text.-status-in_progress
+    font-weight: bold
+  &--note
+    margin-left: 1.5rem
+    font-size: 0.85rem
+    opacity: 0.65
+  &--status
+    margin-left: 0.5rem
+  &--actions
+    margin-left: 0.5rem
+    .button
+      margin-left: 0.15rem
+  &--new-input,
+  &--edit-input
+    max-width: 30rem
+  &--textarea
+    width: 100%
+    font-family: monospace
+  &--footer
+    margin-top: 0.5rem
+    display: flex
+    gap: 0.25rem
+    align-items: center
+  &--empty
+    opacity: 0.65
