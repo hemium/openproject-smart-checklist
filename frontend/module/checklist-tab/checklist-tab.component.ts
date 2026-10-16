@@ -77,6 +77,10 @@ export class SmartChecklistTabComponent implements TabComponent {
     return checklistProgress(this.workPackage.smartChecklist as string);
   }
 
+  public get lastIndex():number {
+    return this.entries.length - 1;
+  }
+
   public get editable():boolean {
     return this.schemaCache.of(this.workPackage).isAttributeEditable('smartChecklist');
   }

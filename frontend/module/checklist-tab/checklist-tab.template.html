@@ -19,54 +19,63 @@
             @for (item of section.items; track item.index) {
               <li class="smart-checklist--item">
                 @if (editingIndex === item.index) {
-                  <input
-                    type="text"
-                    class="smart-checklist--edit-input"
-                    [(ngModel)]="editingText"
-                    (keydown.enter)="commitEdit()"
-                    (keydown.escape)="cancelEdit()"
-                  />
-                  <button class="button -tiny -highlight" (click)="commitEdit()">
-                    {{ I18n.t('js.smart_checklist.save') }}
-                  </button>
-                  <button class="button -tiny" (click)="cancelEdit()">
-                    {{ I18n.t('js.smart_checklist.cancel') }}
-                  </button>
+                  <div class="smart-checklist--row">
+                    <input
+                      type="text"
+                      class="smart-checklist--edit-input"
+                      [(ngModel)]="editingText"
+                      (keydown.enter)="commitEdit()"
+                      (keydown.escape)="cancelEdit()"
+                    />
+                    <button class="button -tiny -highlight" (click)="commitEdit()">
+                      {{ I18n.t('js.smart_checklist.save') }}
+                    </button>
+                    <button class="button -tiny" (click)="cancelEdit()">
+                      {{ I18n.t('js.smart_checklist.cancel') }}
+                    </button>
+                  </div>
                 } @else {
-                  <input
-                    type="checkbox"
-                    class="smart-checklist--checkbox"
-                    [checked]="statusOf(item.entry) === 'done'"
-                    [disabled]="!editable"
-                    (change)="toggle(item.entry, item.index)"
-                  />
-                  <span
-                    class="smart-checklist--text -status-{{ statusOf(item.entry) }}"
-                    (dblclick)="editable && startEdit(item.index, item.entry)"
-                  >{{ item.entry.text }}</span>
-                  @if (editable) {
-                    <span class="smart-checklist--actions">
-                      <select
-                        class="smart-checklist--status"
-                        [value]="statusOf(item.entry)"
-                        (change)="setStatus(item.index, $any($event.target).value)"
-                        [attr.aria-label]="I18n.t('js.smart_checklist.set_status')"
-                      >
-                        <option value="todo">{{ itemLabel('todo') }}</option>
-                        <option value="in_progress">{{ itemLabel('in_progress') }}</option>
-                        <option value="skipped">{{ itemLabel('skipped') }}</option>
-                        <option value="done">{{ itemLabel('done') }}</option>
-                      </select>
-                      <button class="button -tiny" (click)="moveItem(item.index, -1)" [disabled]="item.index === 0">↑</button>
-                      <button class="button -tiny" (click)="moveItem(item.index, 1)">↓</button>
-                      <button class="button -tiny" (click)="startEdit(item.index, item.entry)">
-                        {{ I18n.t('js.smart_checklist.edit') }}
-                      </button>
-                      <button class="button -tiny" (click)="removeItem(item.index)">
-                        {{ I18n.t('js.smart_checklist.delete') }}
-                      </button>
-                    </span>
-                  }
+                  <div class="smart-checklist--row">
+                    <input
+                      type="checkbox"
+                      class="smart-checklist--checkbox"
+                      [checked]="statusOf(item.entry) === 'done'"
+                      [disabled]="!editable"
+                      (change)="toggle(item.entry, item.index)"
+                    />
+                    <span
+                      class="smart-checklist--text -status-{{ statusOf(item.entry) }}"
+                      (dblclick)="editable && startEdit(item.index, item.entry)"
+                    >{{ item.entry.text }}</span>
+                    @if (statusOf(item.entry) === 'in_progress' || statusOf(item.entry) === 'skipped') {
+                      <span class="smart-checklist--status-label">
+                        {{ itemLabel(statusOf(item.entry)) }}
+                      </span>
+                    }
+                    @if (editable) {
+                      <span class="smart-checklist--actions">
+                        <select
+                          class="smart-checklist--status"
+                          [value]="statusOf(item.entry)"
+                          (change)="setStatus(item.index, $any($event.target).value)"
+                          [attr.aria-label]="I18n.t('js.smart_checklist.set_status')"
+                        >
+                          <option value="todo">{{ itemLabel('todo') }}</option>
+                          <option value="in_progress">{{ itemLabel('in_progress') }}</option>
+                          <option value="skipped">{{ itemLabel('skipped') }}</option>
+                          <option value="done">{{ itemLabel('done') }}</option>
+                        </select>
+                        <button class="button -tiny" (click)="moveItem(item.index, -1)" [disabled]="item.index === 0">↑</button>
+                        <button class="button -tiny" (click)="moveItem(item.index, 1)" [disabled]="item.index === lastIndex">↓</button>
+                        <button class="button -tiny" (click)="startEdit(item.index, item.entry)">
+                          {{ I18n.t('js.smart_checklist.edit') }}
+                        </button>
+                        <button class="button -tiny" (click)="removeItem(item.index)">
+                          {{ I18n.t('js.smart_checklist.delete') }}
+                        </button>
+                      </span>
+                    }
+                  </div>
                   @for (note of item.entry.notes; track note) {
                     <div class="smart-checklist--note">{{ note }}</div>
                   }

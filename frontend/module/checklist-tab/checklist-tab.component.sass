@@ -12,29 +12,44 @@
     padding: 0
   &--item
     padding: 0.15rem 0
+  &--row
+    display: flex
+    align-items: center
+    gap: 0.5rem
   &--checkbox
-    margin-right: 0.5rem
-  &--text.-status-done
-    text-decoration: line-through
-    opacity: 0.6
-  &--text.-status-skipped
-    text-decoration: line-through
-    opacity: 0.6
-  &--text.-status-in_progress
-    font-weight: bold
+    flex-shrink: 0
+  &--text
+    flex: 1
+    min-width: 0
+    word-wrap: break-word
+    &.-status-done,
+    &.-status-skipped
+      text-decoration: line-through
+      opacity: 0.6
+  &--status-label
+    flex-shrink: 0
+    font-size: 0.8rem
+    opacity: 0.65
+    white-space: nowrap
   &--note
-    margin-left: 1.5rem
+    margin-left: 1.6rem
     font-size: 0.85rem
     opacity: 0.65
-  &--status
-    margin-left: 0.5rem
   &--actions
-    margin-left: 0.5rem
-    .button
-      margin-left: 0.15rem
+    display: none
+    align-items: center
+    gap: 0.15rem
+    white-space: nowrap
+  &--item:hover &--actions,
+  &--item:focus-within &--actions
+    display: inline-flex
+  &--status
+    width: auto
+    font-size: 0.85rem
   &--new-input,
   &--edit-input
-    max-width: 30rem
+    flex: 1
+    min-width: 0
   &--textarea
     width: 100%
     font-family: monospace
@@ -43,5 +58,7 @@
     display: flex
     gap: 0.25rem
     align-items: center
+    .button
+      white-space: nowrap
   &--empty
     opacity: 0.65
