@@ -1,0 +1,7 @@
+# Assumes OpenProject core is checked out next to this plugin (../openproject).
+inherit_from: ../openproject/.rubocop.yml
+
+# The entry file must keep the gem's name (openproject-smart_checklist) for Bundler.require.
+Naming/FileName:
+  Exclude:
+    - 'lib/openproject-smart_checklist.rb'
